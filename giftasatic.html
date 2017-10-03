@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>GifTastic Gif Generator</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+        <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+  <div id="title" class="jumbotron text-center">
+  <h1>GIF-Tastic GIF Generator</h1>
+  <h3>By Casey Aitken</h3>
+  </div>
+  
+  <form id="gif-form" class="text-center">
+      <label for="gif-input">Add your own GIF Button: </label>
+      <input type="text" id="gif-input"><br>
+
+      <!-- Button triggers new gif to be added -->
+      <input class="btn-primary" id="add-gif" type="submit" value="Add Gif Button">
+  </form>
+  
+  
+  <div id="buttons-appear-here">
+  </div>
+
+  <div id="gifs-appear-here">
+  </div>
+
+
+<!--Script------------------------------------------>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  
+  <script type="text/javascript">
+	  
+	var buttonArray = ["Cats", "Dogs", "Sloths", "Hipster", "Mind Blown", "Funny", "Fail", "Stare", "Cute", "OMG", "Fire", "Dab", "Joke", "Karma", "Prank", "Animals", "Animations", "Lit", "Woah Dude", "Reaction", "Laughing", "LOL", "LMAO", "WTF", "Awkward", "Why", "Love", "Beautiful", "Happy"];
+	  
+	  
+      // Function for displaying movie data
+      function renderButtons() {
+		  
+		console.log("CLICKED BUTTON RENDERED");
+		  
+        // Deleting the movies prior to adding new movies
+        // (this is necessary otherwise you will have repeat buttons)
+        $("#buttons-appear-here").empty();
+
+        // Looping through the array of movies
+        for (var i = 0; i < buttonArray.length; i++) {
+
+          // Then dynamicaly generating buttons for each movie in the array
+          // This code $("<button>") is all jQuery needs to create the beginning and end tag. (<button></button>)
+          var a = $("<button>");
+          // Adding a class of movie to our button
+          a.addClass("gif btn-success align-center");
+          // Adding a data-attribute
+          a.attr("data-name", buttonArray[i]);
+          // Providing the initial button text
+          a.text(buttonArray[i]);
+          // Adding the button to the buttons-appear-here div
+          $("#buttons-appear-here").append(a);
+        }
+      }
+
+      // Receives entry and pushes it to GIF array, runs renderButtons
+      $("#add-gif").on("click", function(event) {
+		  
+		console.log("GIF BUTTON ADDED");
+		  
+        event.preventDefault();
+        // This line grabs the input from the textbox
+        var gif = $("#gif-input").val().trim();
+
+        // Adding movie from the textbox to our array
+        buttonArray.push(gif);
+
+        // Calling renderButtons which handles the processing of our movie array
+        renderButtons();
+      });
+	  
+	  // When a gif buttons is clicked, display the related gifs.
+//    $(".gif").on("click", function() {
+	  function displayGifs() {
+		
+	  console.log("CLICKED GIF BUTTON");
+		
+      var gifName = $(this).attr("data-name");
+      var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+        gifName + "&api_key=dc6zaTOxFJmzC&limit=10";
+
+      $.ajax({
+          url: queryURL,
+          method: "GET"
+        })
+        .done(function(response) {
+          var results = response.data;
+
+          for (var i = 0; i < results.length; i++) {
+            var gifDiv = $("<div class='item'>");
+
+            var rating = results[i].rating;
+
+            var p = $("<p>").text("#" + gifName + " - Rating: " + rating);
+
+            var gifImage = $("<img>");
+            gifImage.attr("src", results[i].images.fixed_height.url);
+
+            gifDiv.prepend(p);
+            gifDiv.prepend(gifImage);
+
+            $("#gifs-appear-here").prepend(gifDiv);
+          }
+        });
+//    });
+	  };
+
+      // Adding a click event listener to all elements with a class of "movie"
+      $(document).on("click", ".gif", displayGifs);
+
+      // Calling the renderButtons function to display the intial buttons
+      renderButtons();
+	  
+  </script>
+<!--End Script------------------------------------------>
+
+</body>
+
+</html>

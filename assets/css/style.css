@@ -1,0 +1,49 @@
+@charset "UTF-8";
+/* CSS Document */
+
+body {
+	font-size: 18px;
+}
+h1 { 
+	color: white;
+}
+p {
+	margin-top: 4px;
+}
+button {
+	margin: 4px;
+}
+
+.jumbotron {
+	background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("https://i.imgur.com/NP7iDOL.gif");
+	color: white;
+}
+.item {
+	display: inline-block;
+	margin: 10px;
+}
+
+#gif-form {
+	display: block;
+	margin: -16px auto 0 auto;
+	background: linear-gradient(white, rgba(0, 0, 0, 0.2));
+	border-radius: 8px;
+	padding: 10px 0;
+}
+#gif-input {
+	border-radius: 4px;
+	padding: 4px;
+}
+#gifs-appear-here {
+	margin-top: 6px;
+	color: rgba(0, 0, 0, 0.4);
+}
+#buttons-appear-here {
+	margin-top: 6px;
+	text-align: center;
+}
+#add-gif, .gif {
+	border-radius: 4px;
+	padding: 4px 10px;
+	margin: 8px 4px;
+}
